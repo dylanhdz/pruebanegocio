@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ClienteService {
     Cliente crearCliente(Cliente cliente);
-    List<Cliente> buscarClientes(String id);
+    List<Cliente> buscarClientes(String clave);
 }

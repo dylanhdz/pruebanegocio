@@ -6,11 +6,14 @@ import com.dylan.pruebanegocio.cliente.servicio.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
     private final ClienteRepository clienteRepository;
 
+    /*Si existe el cliente, alertar excepción, de lo contrario, guardar.*/
     @Override
     public Cliente crearCliente(Cliente cliente) {
         if (clienteRepository.existsByNumeroIdentificacion(cliente.getNumeroidentificacion())) {
@@ -18,7 +21,13 @@ public class ClienteServiceImpl implements ClienteService {
         }
         return clienteRepository.save(cliente);
     }
-
+    /*Buscar cliente por nombre o id*/
     @Override
-    
+    public List<Cliente> buscarClientes(String clave) {
+        if (clave == null || clave.isEmpty()) {
+            return clienteRepository.findAll();
+        } else {
+            return clienteRepository.findByNombresContainingIgnoreCaseOOrNumeroidentificacionContaining(clave, clave);
+        }
+    }
 }
