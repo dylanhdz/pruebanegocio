@@ -8,5 +8,5 @@ import java.util.List;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     boolean existsByNumeroIdentificacion(String numeroIdentificacion);
     /* Composición para hallar o nombres o número de identificación */
-    List<Cliente> findByNombresContainingIgnoreCaseOOrNumeroidentificacionContaining(String nombres, String numeroIdentificacion);
+    List<Cliente> findByNombresContainingIgnoreCaseOrNumeroIdentificacionContaining(String nombres, String numeroIdentificacion);
 }

@@ -16,7 +16,7 @@ public class ClienteServiceImpl implements ClienteService {
     /*Si existe el cliente, alertar excepción, de lo contrario, guardar.*/
     @Override
     public Cliente crearCliente(Cliente cliente) {
-        if (clienteRepository.existsByNumeroIdentificacion(cliente.getNumeroidentificacion())) {
+        if (clienteRepository.existsByNumeroIdentificacion(cliente.getNumeroIdentificacion())) {
             throw new IllegalArgumentException("El número de identificación ya existe");
         }
         return clienteRepository.save(cliente);
@@ -27,7 +27,7 @@ public class ClienteServiceImpl implements ClienteService {
         if (clave == null || clave.isEmpty()) {
             return clienteRepository.findAll();
         } else {
-            return clienteRepository.findByNombresContainingIgnoreCaseOOrNumeroidentificacionContaining(clave, clave);
+            return clienteRepository.findByNombresContainingIgnoreCaseOrNumeroIdentificacionContaining(clave, clave);
         }
     }
 }

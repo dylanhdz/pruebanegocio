@@ -19,7 +19,7 @@ public class Cliente {
     private String tipoidentificacion;
 
     @Column(nullable = false, unique = true)
-    private String numeroidentificacion;
+    private String numeroIdentificacion;
 
     @Column(nullable = false)
     private String nombres;
