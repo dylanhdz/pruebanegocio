@@ -6,7 +6,9 @@ import com.dylan.pruebanegocio.cliente.repositorio.ClienteRepository;
 import com.dylan.pruebanegocio.cliente.servicio.ClienteService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente crearCliente(Cliente cliente) {
         if (clienteRepository.existsByNumeroIdentificacion(cliente.getNumeroIdentificacion())) {
-            throw new IllegalArgumentException("El número de identificación ya existe");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Identificación ya existe: " + cliente.getNumeroIdentificacion()
+            );
         }
         return clienteRepository.save(cliente);
     }
@@ -38,11 +43,17 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public Direccion agregarDireccion(Long clienteId, Direccion direccion) {
         Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Cliente no encontrado."
+        ));
 
         // Validar solo una dirección matriz
         if (direccion.isEsMatriz() && cliente.getDireccionMatriz() != null) {
-            throw new RuntimeException("El cliente ya tiene una dirección matriz");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "El cliente ya tiene una dirección matriz."
+            );
         }
 
         direccion.setCliente(cliente);
@@ -60,12 +71,13 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public List<Direccion> listarDirecciones(Long clienteId) {
         Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Cliente no encontrado."
+                ));
 
         List<Direccion> direcciones = new ArrayList<>();
-        if (cliente.getDireccionMatriz() != null) {
-            direcciones.add(cliente.getDireccionMatriz());
-        }
+
         direcciones.addAll(cliente.getDireccionesAdicionales());
 
         return direcciones;
@@ -75,31 +87,46 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public Cliente editarCliente(Long clienteId, Cliente cliente) {
         Cliente clienteExistente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-
-        // Actualizar los campos del cliente existente
-        clienteExistente.setTipoidentificacion(cliente.getTipoidentificacion());
-        clienteExistente.setNumeroIdentificacion(cliente.getNumeroIdentificacion());
-        clienteExistente.setNombres(cliente.getNombres());
-        clienteExistente.setCorreo(cliente.getCorreo());
-        clienteExistente.setTelefono(cliente.getTelefono());
-        // Actualizar la dirección matriz
-        if (cliente.getDireccionMatriz() != null) {
-            clienteExistente.setDireccionMatriz(cliente.getDireccionMatriz());
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Cliente no encontrado."
+                ));
+        // Validar si el número de identificación ya existe
+        if (cliente.getNumeroIdentificacion() != null &&
+            clienteRepository.existsByNumeroIdentificacion(cliente.getNumeroIdentificacion()) &&
+            !clienteExistente.getNumeroIdentificacion().equals(cliente.getNumeroIdentificacion())) {
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Esa identificación ya existe: " + cliente.getNumeroIdentificacion()
+                );
         }
-        // Actualizar las direcciones adicionales
-        if (cliente.getDireccionesAdicionales() != null) {
-            clienteExistente.getDireccionesAdicionales().clear();
-            clienteExistente.getDireccionesAdicionales().addAll(cliente.getDireccionesAdicionales());
+        if (cliente.getTipoidentificacion() != null) {
+            clienteExistente.setTipoidentificacion(cliente.getTipoidentificacion());
+        }
+        if (cliente.getNumeroIdentificacion() != null) {
+            clienteExistente.setNumeroIdentificacion(cliente.getNumeroIdentificacion());
+        }
+        if (cliente.getNombres() != null) {
+            clienteExistente.setNombres(cliente.getNombres());
+        }
+        if (cliente.getCorreo() != null) {
+            clienteExistente.setCorreo(cliente.getCorreo());
+        }
+        if (cliente.getTelefono() != null) {
+            clienteExistente.setTelefono(cliente.getTelefono());
         }
         // Guardar el cliente actualizado
         return clienteRepository.save(clienteExistente);
     }
+
     @Override
     @Transactional
     public void eliminarCliente(Long clienteId) {
         Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Cliente no encontrado."
+                ));
 
         // Eliminar las direcciones asociadas
         cliente.getDireccionesAdicionales().clear();

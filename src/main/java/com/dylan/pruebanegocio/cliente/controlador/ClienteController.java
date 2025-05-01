@@ -5,6 +5,7 @@ import com.dylan.pruebanegocio.cliente.modelo.Direccion;
 import com.dylan.pruebanegocio.cliente.servicio.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ClienteController {
     @Operation(summary = "Crear un nuevo cliente")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente crearCliente(@RequestBody Cliente cliente) {
+    public Cliente crearCliente(@Valid @RequestBody Cliente cliente) {
         return clienteService.crearCliente(cliente);
     }
 

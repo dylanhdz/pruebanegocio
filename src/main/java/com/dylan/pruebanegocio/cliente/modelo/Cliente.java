@@ -1,5 +1,6 @@
 package com.dylan.pruebanegocio.cliente.modelo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,9 +32,11 @@ public class Cliente {
     private String telefono;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumn(name = "direccion_matriz_id")
     private Direccion direccionMatriz;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Direccion> direccionesAdicionales = new ArrayList<>();
 }
