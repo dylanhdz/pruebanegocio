@@ -9,8 +9,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.dylan.pruebanegocio.cliente.repositorio.ClienteRepository;
+
 @ExtendWith(MockitoExtension.class)
-public class ClienteServiceImplTest {
+public class MockitoClienteServiceImplTest {
     @Mock
     private ClienteRepository clienteRepository;
 
