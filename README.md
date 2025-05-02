@@ -47,7 +47,9 @@ set PATH=%JAVA_HOME%\bin;%PATH%
 ```
 
 ## 4. Pruebas de Postman Listas:
-<a src="https://github.com/dylanhdz/pruebanegocio/blob/main/pruebas_con_postman.json">Disponible aquí</a>. Para ahorrar tiempo, ya estpa lista una colección de Postman para probar los endpoints de la API.
+[¡Disponibles aquí!](https://github.com/dylanhdz/pruebanegocio/blob/main/pruebas_con_postman.json)
+Para ahorrar tiempo, ya está lista una colección de Postman para probar los endpoints de la API con objetos listos.
+<img src="./images/postman.png"/>
 
 ## 5. ¿Cómo usar la API REST? - Documentación con Swagger
 Con la aplicación corriendo, la documentación interactiva está disponible en `http://localhost:8080/swagger-ui/index.html#/`
