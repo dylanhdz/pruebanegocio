@@ -48,7 +48,11 @@ set PATH=%JAVA_HOME%\bin;%PATH%
 
 ## 4. Pruebas de Postman Listas:
 [¡Disponibles aquí!](https://github.com/dylanhdz/pruebanegocio/blob/main/pruebas_con_postman.json)
-Para ahorrar tiempo, ya está lista una colección de Postman para probar los endpoints de la API con objetos listos.
+<br>Para ahorrar tiempo, ya está lista una colección de Postman para probar los endpoints de la API con objetos listos.
+1. Click en el botón de importar en Postman.
+2. Seleccionar la opción de importar desde archivo.
+3. Seleccionar el archivo [`pruebas_con_postman.json`](https://github.com/dylanhdz/pruebanegocio/blob/main/pruebas_con_postman.json) que se encuentra en la raíz del proyecto.
+
 <img src="./images/postman.png"/>
 
 ## 5. ¿Cómo usar la API REST? - Documentación con Swagger
@@ -68,6 +72,8 @@ Endpoint principal: `http://localhost:8080/api`
 
 ## 7. Uso de TDD
 Se empezó por TDD con JUnit usando semáforo rojo-verde-refactor y el esquema arrange-act-assert.
+
+Como siempre, falla la prueba al principio, luego se implementa el código para que pase la prueba y finalmente se refactoriza el código.
 ```java
 @Test
     void crearCliente_ClienteValido_CreaCliente() {
@@ -89,13 +95,13 @@ Para correr las pruebas, se usa el siguiente comando. Si no funciona, véase la 
 ```bash
 mvn test
 ```
-## 8. Conclusiones
-- Se logró implementar una API REST con Spring Boot y PostgreSQL.
-- Se usó TDD para asegurar la calidad del código.
-- Se implementaron pruebas unitarias y de integración.
-- Se usó Swagger para documentar la API.
-- Se usó Postman para probar la API.
 
+## 8. Diagrama de Clases
+1. Un cliente puede tener varias direcciones (1-N)
+2. Una dirección pertenece a un cliente (N-1)
+3. Entonces, es una relación de uno a muchos.
+
+<img src="./images/clases.png" alt="Diagrama de clases" width="600"/>
 
 
 
